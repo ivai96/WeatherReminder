@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "971100351347",
+    "firebase_url": "https://weather-reminder-41378.firebaseio.com",
+    "project_id": "weather-reminder-41378",
+    "storage_bucket": "weather-reminder-41378.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971100351347:android:d1bba20b8180dc3d",
+        "android_client_info": {
+          "package_name": "fikt.pmp.weatherreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971100351347-er9275gi1gljbutsjcpvraoric2tgl1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fikt.pmp.weatherreminder",
+            "certificate_hash": "a91bf34ce0c5ba309c16741de106ef452546f57c"
+          }
+        },
+        {
+          "client_id": "971100351347-8qu6ri67fbe54guuduk9lr45cp4r87ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZmON1WOc2ku7R5v96UTDMCu1ahoQJYgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971100351347-8qu6ri67fbe54guuduk9lr45cp4r87ho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
