@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView weatherData;
     private TextView cityName;
     private TextView country;
-    private ImageView weatherIcon;
+    private ImageView weatherIconIV;
     private TextView weatherDescription;
     private TextView temperature;
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         weatherData = findViewById(R.id.weatherData);
         cityName = findViewById(R.id.cityName);
         country = findViewById(R.id.countryName);
-        weatherIcon = findViewById(R.id.weatherIcon);
+        weatherIconIV = findViewById(R.id.weatherIcon);
         weatherDescription = findViewById(R.id.weatherDescription);
         temperature = findViewById(R.id.temperature);
 
@@ -61,18 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
                     cityName.setText(weatherResponse.getCity().getName());
                     country.setText(", " + weatherResponse.getCity().getCountry());
-                    String iconCode = weatherResponse.getList().get(0).getWeather().get(0).getIcon();
-                    String url = ICON_BASE_URL+iconCode+".png";
 
-                    weatherIcon.setImageResource(R.drawable.clearskyn);
+                    String iconCode = weatherResponse.getList().get(0).getWeather().get(0).getIcon();
+                    getMainWeatherIcon(iconCode);
+
                     weatherDescription.setText(weatherResponse.getList().get(0).getWeather().get(0).getDescription());
 
-                    temperature.setText(Float.toString(weatherResponse.getList().get(0).getMain().getTemp()-273.15f));
-                    String stringBuilder = "" ;
+                    float tempInKelvin = weatherResponse.getList().get(0).getMain().getTemp();
+                    calculateTemperature(tempInKelvin, true);
+
+                    String stringBuilder = "";
                     for (int i = 0; i < weatherResponse.getCnt(); i++) {
                         List item = weatherResponse.getList().get(i);
                         stringBuilder += "Time: " +
-                                item.getDt_txt()+
+                                item.getDt_txt() +
                                 "\n" +
                                 "Temperature: " +
                                 item.getMain().getTemp();
@@ -87,5 +89,66 @@ public class MainActivity extends AppCompatActivity {
                 weatherData.setText("Грешка");
             }
         });
+    }
+
+    void getMainWeatherIcon(String iconCode) {
+        switch (iconCode) {
+            case "01d":
+                weatherIconIV.setImageResource(R.drawable.clearskyd);
+                break;
+            case "01n":
+                weatherIconIV.setImageResource(R.drawable.clearskyn);
+                break;
+            case "02d":
+                weatherIconIV.setImageResource(R.drawable.fewcloudsd);
+                break;
+            case "02n":
+                weatherIconIV.setImageResource(R.drawable.fewcloudsn);
+                break;
+            case "03d":
+            case "03n":
+                weatherIconIV.setImageResource(R.drawable.clearskyn);
+                break;
+            case "04d":
+            case "04n":
+                weatherIconIV.setImageResource(R.drawable.brokenclouds);
+                break;
+            case "09d":
+            case "09n":
+                weatherIconIV.setImageResource(R.drawable.showerrain);
+                break;
+            case "10d":
+                weatherIconIV.setImageResource(R.drawable.raind);
+                break;
+            case "10n":
+                weatherIconIV.setImageResource(R.drawable.rainn);
+                break;
+            case "11d":
+                weatherIconIV.setImageResource(R.drawable.thunderstormd);
+                break;
+            case "11n":
+                weatherIconIV.setImageResource(R.drawable.thunderstormn);
+                break;
+            case "13d":
+                weatherIconIV.setImageResource(R.drawable.snowd);
+                break;
+            case "13n":
+                weatherIconIV.setImageResource(R.drawable.snown);
+                break;
+            case "50d":
+            case "50n":
+                weatherIconIV.setImageResource(R.drawable.mist);
+                break;
+        }
+    }
+    void calculateTemperature (float tempInKelvin, boolean convertToCelsius )
+    {
+        if (convertToCelsius == true)
+        {
+            temperature.setText(Integer.toString(Math.round(tempInKelvin - 273.15f)));
+        }
+        else
+            temperature.setText(Integer.toString(Math.round((tempInKelvin-273.15f)*9/5 + 32)));
+
     }
 }
