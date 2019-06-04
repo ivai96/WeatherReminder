@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView cityName;
     private TextView country;
     private ImageView weatherIcon;
+    private TextView weatherDescription;
+    private TextView temperature;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         cityName = findViewById(R.id.cityName);
         country = findViewById(R.id.countryName);
         weatherIcon = findViewById(R.id.weatherIcon);
+        weatherDescription = findViewById(R.id.weatherDescription);
+        temperature = findViewById(R.id.temperature);
 
         getCurrentData();
     }
@@ -59,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
                     country.setText(", " + weatherResponse.getCity().getCountry());
                     String iconCode = weatherResponse.getList().get(0).getWeather().get(0).getIcon();
                     String url = ICON_BASE_URL+iconCode+".png";
-                    Picasso.get().load(url).into(weatherIcon);
+
+                    weatherIcon.setImageResource(R.drawable.clearskyn);
+                    weatherDescription.setText(weatherResponse.getList().get(0).getWeather().get(0).getDescription());
+
+                    temperature.setText(Float.toString(weatherResponse.getList().get(0).getMain().getTemp()-273.15f));
                     String stringBuilder = "" ;
                     for (int i = 0; i < weatherResponse.getCnt(); i++) {
                         List item = weatherResponse.getList().get(i);
