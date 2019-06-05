@@ -2,7 +2,7 @@ package fikt.pmp.weatherreminder.DataModel;
 
 import java.util.ArrayList;
 
-public class OpenWeatherMapData
+public class OpenWeatherMapFiveDays
 {
     private int cod;
     private float message;

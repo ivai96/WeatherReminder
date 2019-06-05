@@ -1,6 +1,5 @@
 package fikt.pmp.weatherreminder;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -12,14 +11,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 
+import java.util.concurrent.ExecutionException;
+
+import fikt.pmp.weatherreminder.ConsumingAPIs.CurrentWeather;
 import fikt.pmp.weatherreminder.ConsumingAPIs.FiveDayThreeHour;
 import fikt.pmp.weatherreminder.DataModel.List;
-import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapData;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapCurrent;
+import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapFiveDays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,12 +34,15 @@ public class MainActivity extends AppCompatActivity {
     private ImageView celsiusOrFahrenheitIV;
     private TextView firstDateTV;
     private TextView firstTimeTv;
-
+    OpenWeatherMapFiveDays openWeatherMapFiveDays;
+    OpenWeatherMapCurrent openWeatherMapCurrent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         JodaTimeAndroid.init(this);
+
+
 
         weatherData = findViewById(R.id.weatherData);
         cityName = findViewById(R.id.cityName);
@@ -53,63 +54,98 @@ public class MainActivity extends AppCompatActivity {
         firstDateTV = findViewById(R.id.firstDate);
         firstTimeTv = findViewById(R.id.firstTime);
 
-        getCurrentData();
+        try {
+            openWeatherMapFiveDays = new FiveDayThreeHour().execute().get();
+            openWeatherMapCurrent = new CurrentWeather().execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        setWeatherData();
 
     }
 
-    void getCurrentData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        IWeatherService service = retrofit.create(IWeatherService.class);
-        Call<OpenWeatherMapData> call = service.getCurrentWeatherData(ID, APP_ID);
-        call.enqueue(new Callback<OpenWeatherMapData>() {
-            @Override
-            public void onResponse
-                    (@NonNull Call<OpenWeatherMapData> call, @NonNull Response<OpenWeatherMapData> response) {
-                if (response.code() == 200) {
-                    OpenWeatherMapData weatherResponse = response.body();
-                    assert weatherResponse != null;
+//    void getCurrentData() {
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        IWeatherService service = retrofit.create(IWeatherService.class);
+//        Call<OpenWeatherMapFiveDays> call = service.getCurrentWeatherData(ID, APP_ID);
+//        call.enqueue(new Callback<OpenWeatherMapFiveDays>() {
+//            @Override
+//            public void onResponse
+//                    (@NonNull Call<OpenWeatherMapFiveDays> call, @NonNull Response<OpenWeatherMapFiveDays> response) {
+//                if (response.code() == 200) {
+//                    OpenWeatherMapFiveDays weatherResponse = response.body();
+//                    assert weatherResponse != null;
+//
+//                    cityName.setText(weatherResponse.getCity().getName());
+//                    country.setText(", " + weatherResponse.getCity().getCountry());
+//
+//                    String iconCode = weatherResponse.getList().get(0).getWeather().get(0).getIcon();
+//                    getMainWeatherIcon(iconCode);
+//
+//                    weatherDescription.setText(weatherResponse.getList().get(0).getWeather().get(0).getDescription());
+//
+//                    float tempInKelvin = weatherResponse.getList().get(0).getMain().getTemp();
+//                    calculateTemperature(tempInKelvin, true);
+//
+//                    String dateTimeString = weatherResponse.getList().get(0).getDt_txt();
+//                    DateTime dateTime = DateTime.parse(dateTimeString, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+//                    firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
+//                    firstTimeTv.setText("Last measured at: " + dateTime.toString(DateTimeFormat.shortTime()));
+//
+//                    String stringBuilder = "";
+//                    for (int i = 0; i < weatherResponse.getCnt(); i++) {
+//                        List item = weatherResponse.getList().get(i);
+//                        stringBuilder += "Time: " +
+//                                item.getDt_txt() +
+//                                "\n" +
+//                                "Temperature: " +
+//                                item.getMain().getTemp();
+//                    }
+//                    //weatherData.setText(stringBuilder);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<OpenWeatherMapFiveDays> call, @NonNull Throwable t) {
+//                weatherData.setText("Greska");
+//            }
+//
+//
+//        });
+//
+//
+//    }
+    void setWeatherData(){
+        cityName.setText(openWeatherMapFiveDays.getCity().getName());
+        country.setText(", " + openWeatherMapFiveDays.getCity().getCountry());
 
-                    cityName.setText(weatherResponse.getCity().getName());
-                    country.setText(", " + weatherResponse.getCity().getCountry());
+        String iconCode = openWeatherMapFiveDays.getList().get(0).getWeather().get(0).getIcon();
+        getMainWeatherIcon(iconCode);
 
-                    String iconCode = weatherResponse.getList().get(0).getWeather().get(0).getIcon();
-                    getMainWeatherIcon(iconCode);
+        weatherDescription.setText(openWeatherMapFiveDays.getList().get(0).getWeather().get(0).getDescription());
 
-                    weatherDescription.setText(weatherResponse.getList().get(0).getWeather().get(0).getDescription());
+        float tempInKelvin = openWeatherMapCurrent.getMain().getTemp();
+        calculateTemperature(tempInKelvin, true);
 
-                    float tempInKelvin = weatherResponse.getList().get(0).getMain().getTemp();
-                    calculateTemperature(tempInKelvin, true);
+        String dateTimeString = openWeatherMapFiveDays.getList().get(0).getDt_txt();
+        DateTime dateTime = DateTime.parse(dateTimeString, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+        firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
+        firstTimeTv.setText("Last measured at: " + dateTime.toString(DateTimeFormat.shortTime()));
 
-                    String dateTimeString = weatherResponse.getList().get(0).getDt_txt();
-                    DateTime dateTime = DateTime.parse(dateTimeString, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
-                    firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
-                    firstTimeTv.setText("Last measured at: " + dateTime.toString(DateTimeFormat.shortTime()));
-
-                    String stringBuilder = "";
-                    for (int i = 0; i < weatherResponse.getCnt(); i++) {
-                        List item = weatherResponse.getList().get(i);
-                        stringBuilder += "Time: " +
-                                item.getDt_txt() +
-                                "\n" +
-                                "Temperature: " +
-                                item.getMain().getTemp();
-                    }
-                    //weatherData.setText(stringBuilder);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<OpenWeatherMapData> call, @NonNull Throwable t) {
-                weatherData.setText("Greska");
-            }
-
-
-        });
-
-
+        String stringBuilder = "";
+        for (int i = 0; i < openWeatherMapFiveDays.getCnt(); i++) {
+            List item = openWeatherMapFiveDays.getList().get(i);
+            stringBuilder += "Time: " +
+                    item.getDt_txt() +
+                    "\n" +
+                    "Temperature: " +
+                    item.getMain().getTemp();
+        }
     }
 
     void getMainWeatherIcon(String iconCode) {
@@ -172,4 +208,5 @@ public class MainActivity extends AppCompatActivity {
             celsiusOrFahrenheitIV.setImageResource(R.drawable.fahrenheit);
         }
     }
+
 }
