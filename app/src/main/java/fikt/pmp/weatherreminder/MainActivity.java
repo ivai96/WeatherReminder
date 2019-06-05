@@ -1,14 +1,18 @@
 package fikt.pmp.weatherreminder;
 
-import android.graphics.Path;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import net.danlew.android.joda.JodaTimeAndroid;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
+
+import fikt.pmp.weatherreminder.ConsumingAPIs.FiveDayThreeHour;
 import fikt.pmp.weatherreminder.DataModel.List;
 import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapData;
 import retrofit2.Call;
@@ -18,10 +22,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+
     private static String BASE_URL = "http://api.openweathermap.org/";
     private static String APP_ID = "929c4499e37f7764ce3dda29873feb84";
     private static String ID = "792578";
-    private static String ICON_BASE_URL = "http://openweathermap.org/img/w/";
 
     private TextView weatherData;
     private TextView cityName;
@@ -29,11 +33,15 @@ public class MainActivity extends AppCompatActivity {
     private ImageView weatherIconIV;
     private TextView weatherDescription;
     private TextView temperature;
+    private ImageView celsiusOrFahrenheitIV;
+    private TextView firstDateTV;
+    private TextView firstTimeTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        JodaTimeAndroid.init(this);
 
         weatherData = findViewById(R.id.weatherData);
         cityName = findViewById(R.id.cityName);
@@ -41,8 +49,12 @@ public class MainActivity extends AppCompatActivity {
         weatherIconIV = findViewById(R.id.weatherIcon);
         weatherDescription = findViewById(R.id.weatherDescription);
         temperature = findViewById(R.id.temperature);
+        celsiusOrFahrenheitIV = findViewById(R.id.celsiusOrFahrenheit);
+        firstDateTV = findViewById(R.id.firstDate);
+        firstTimeTv = findViewById(R.id.firstTime);
 
         getCurrentData();
+
     }
 
     void getCurrentData() {
@@ -54,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
         Call<OpenWeatherMapData> call = service.getCurrentWeatherData(ID, APP_ID);
         call.enqueue(new Callback<OpenWeatherMapData>() {
             @Override
-            public void onResponse(@NonNull Call<OpenWeatherMapData> call, @NonNull Response<OpenWeatherMapData> response) {
+            public void onResponse
+                    (@NonNull Call<OpenWeatherMapData> call, @NonNull Response<OpenWeatherMapData> response) {
                 if (response.code() == 200) {
                     OpenWeatherMapData weatherResponse = response.body();
                     assert weatherResponse != null;
@@ -70,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
                     float tempInKelvin = weatherResponse.getList().get(0).getMain().getTemp();
                     calculateTemperature(tempInKelvin, true);
 
+                    String dateTimeString = weatherResponse.getList().get(0).getDt_txt();
+                    DateTime dateTime = DateTime.parse(dateTimeString, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+                    firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
+                    firstTimeTv.setText("Last measured at: " + dateTime.toString(DateTimeFormat.shortTime()));
+
                     String stringBuilder = "";
                     for (int i = 0; i < weatherResponse.getCnt(); i++) {
                         List item = weatherResponse.getList().get(i);
@@ -79,16 +97,19 @@ public class MainActivity extends AppCompatActivity {
                                 "Temperature: " +
                                 item.getMain().getTemp();
                     }
-
-                    weatherData.setText(stringBuilder);
+                    //weatherData.setText(stringBuilder);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<OpenWeatherMapData> call, @NonNull Throwable t) {
-                weatherData.setText("Грешка");
+                weatherData.setText("Greska");
             }
+
+
         });
+
+
     }
 
     void getMainWeatherIcon(String iconCode) {
@@ -141,14 +162,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    void calculateTemperature (float tempInKelvin, boolean convertToCelsius )
-    {
-        if (convertToCelsius == true)
-        {
-            temperature.setText(Integer.toString(Math.round(tempInKelvin - 273.15f)));
-        }
-        else
-            temperature.setText(Integer.toString(Math.round((tempInKelvin-273.15f)*9/5 + 32)));
 
+    void calculateTemperature(float tempInKelvin, boolean convertToCelsius) {
+        if (convertToCelsius == true) {
+            temperature.setText(Integer.toString(Math.round(tempInKelvin - 273.15f)));
+            celsiusOrFahrenheitIV.setImageResource(R.drawable.celsius);
+        } else {
+            temperature.setText(Integer.toString(Math.round((tempInKelvin - 273.15f) * 9 / 5 + 32)));
+            celsiusOrFahrenheitIV.setImageResource(R.drawable.fahrenheit);
+        }
     }
 }
