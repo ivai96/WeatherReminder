@@ -10,6 +10,7 @@ import android.widget.TextView;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.concurrent.ExecutionException;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         JodaTimeAndroid.init(this);
 
-        weatherData = findViewById(R.id.weatherData);
         cityName = findViewById(R.id.cityName);
         country = findViewById(R.id.countryName);
         weatherIconIV = findViewById(R.id.weatherIcon);
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         String dateTimeString = openWeatherMapFiveDays.getList().get(0).getDt_txt();
         DateTime dateTime = DateTime.parse(dateTimeString, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
         firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
-        firstTimeTv.setText("Last measured at: " + dateTime.toString(DateTimeFormat.shortTime()));
+        //firstTimeTv.setText(LocalDate.now());
 
         String stringBuilder = "";
         for (int i = 0; i < openWeatherMapFiveDays.getCnt(); i++) {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void getMainWeatherIcon(String iconCode) {
+     void getMainWeatherIcon(String iconCode) {
         switch (iconCode) {
             case "01d":
                 weatherIconIV.setImageResource(R.drawable.clearskyd);
