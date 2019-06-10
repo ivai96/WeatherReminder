@@ -92,7 +92,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                     break;
                 case "03d":
                 case "03n":
-                    listItemIconView.setImageResource(R.drawable.clearskyn);
+                    listItemIconView.setImageResource(R.drawable.scatteredclouds);
                     break;
                 case "04d":
                 case "04n":

@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "03d":
             case "03n":
-                weatherIconIV.setImageResource(R.drawable.clearskyn);
+                weatherIconIV.setImageResource(R.drawable.scatteredclouds);
                 break;
             case "04d":
             case "04n":
