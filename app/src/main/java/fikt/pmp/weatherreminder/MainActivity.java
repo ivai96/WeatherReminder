@@ -31,13 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView temperature;
     private ImageView celsiusOrFahrenheitIV;
     private TextView firstDateTV;
-    private TextView firstTimeTv;
     OpenWeatherMapFiveDays openWeatherMapFiveDays;
     OpenWeatherMapCurrent openWeatherMapCurrent;
 
     private static final int NUM_LIST_ITEMS = 9;
     ForecastAdapter mForecastAdapter;
-    RecyclerView mNumberList;
+    RecyclerView mWeatherList;
+    RecyclerView mFourDaysWeatherList;
+
+    FourDaysWeatherAdapter mFourDaysWeatherAdapter;
 
 
     @Override
@@ -53,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         temperature = findViewById(R.id.temperature);
         celsiusOrFahrenheitIV = findViewById(R.id.celsiusOrFahrenheit);
         firstDateTV = findViewById(R.id.firstDate);
-        firstTimeTv = findViewById(R.id.firstTime);
 
         try {
             openWeatherMapFiveDays = new FiveDayThreeHour().execute().get();
@@ -65,13 +66,20 @@ public class MainActivity extends AppCompatActivity {
         }
         setWeatherData();
 
-        mNumberList = findViewById(R.id.recycler);
+        mWeatherList = findViewById(R.id.recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mNumberList.setLayoutManager(layoutManager);
-        mNumberList.setHasFixedSize(true);
+        mWeatherList.setLayoutManager(layoutManager);
+        mWeatherList.setHasFixedSize(true);
         mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays);
-        mNumberList.setAdapter(mForecastAdapter);
+        mWeatherList.setAdapter(mForecastAdapter);
+
+        mFourDaysWeatherList = findViewById(R.id.recycler2);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
+        mFourDaysWeatherList.setLayoutManager(layoutManager2);
+        mFourDaysWeatherList.setHasFixedSize(true);
+        mFourDaysWeatherAdapter = new FourDaysWeatherAdapter(4, openWeatherMapFiveDays);
+        mFourDaysWeatherList.setAdapter(mFourDaysWeatherAdapter);
     }
 
     void setWeatherData(){

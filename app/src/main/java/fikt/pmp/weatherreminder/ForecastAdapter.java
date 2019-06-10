@@ -17,7 +17,6 @@ import fikt.pmp.weatherreminder.DataModel.List;
 import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapFiveDays;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
-    private static final String TAG = ForecastAdapter.class.getSimpleName();
     private int mNumberItems;
     private OpenWeatherMapFiveDays mOpenWeatherMapFiveDays;
 
