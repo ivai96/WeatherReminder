@@ -1,9 +1,12 @@
 package fikt.pmp.weatherreminder;
 
+import android.content.Intent;
+import android.icu.text.DateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -127,28 +130,42 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays);
 //        mSecondDayDate.setText(secondDayDate.toString(DateTimeFormat.mediumDate()));
         TemperatureWorker dayTwo = new TemperatureWorker(true);
         dayTwo.findDayMinMax(weatherDataSort.getDayData(2));
-        mSecondDayDate.setText(weatherDataSort.getDateTimes().get(1).toString(DateTimeFormat.mediumDate())
-                + "\t\t" + dayTwo.getmDayMaxTemp()  +"° / " + dayTwo.getmDayMinTemp() + "°");
+        mSecondDayDate.setText(weatherDataSort.getDates().get(1).toString()
+                + "     " + dayTwo.getmDayMaxTemp()  +"° / " + dayTwo.getmDayMinTemp() + "°");
+
+        mSecondDayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SecondDayActivity.class);
+                startActivity(intent);
+            }
+        });
 
         TemperatureWorker dayThree = new TemperatureWorker(true);
         dayThree.findDayMinMax(weatherDataSort.getDayData(3));
         mThirdDayDate.setText(weatherDataSort.getDateTimes().get(2).toString(DateTimeFormat.mediumDate())
-                + "\t\t" + dayThree.getmDayMaxTemp()  +"° / " + dayThree.getmDayMinTemp() + "°");
+                + "     " + dayThree.getmDayMaxTemp()  +"° / " + dayThree.getmDayMinTemp() + "°");
+
+        mThirdDayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ThirdDayActivity.class);
+                startActivity(intent);
+            }
+        });
 
         TemperatureWorker dayFour = new TemperatureWorker(true);
         dayFour.findDayMinMax(weatherDataSort.getDayData(4));
         mFourthDayDate.setText(weatherDataSort.getDateTimes().get(3).toString(DateTimeFormat.mediumDate())
-                + "\t\t" + dayFour.getmDayMaxTemp()  +"° / " + dayFour.getmDayMinTemp() + "°");
+                + "     " + dayFour.getmDayMaxTemp()  +"° / " + dayFour.getmDayMinTemp() + "°");
 
-        String stringBuilder = "";
-        for (int i = 0; i < openWeatherMapFiveDays.getCnt(); i++) {
-            List item = openWeatherMapFiveDays.getList().get(i);
-            stringBuilder += "Time: " +
-                    item.getDt_txt() +
-                    "\n" +
-                    "Temperature: " +
-                    item.getMain().getTemp();
-        }
+        mFourthDayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FourthDay.class);
+                startActivity(intent);
+            }
+        });
     }
 
     void getMainWeatherIcon(String iconCode) {
