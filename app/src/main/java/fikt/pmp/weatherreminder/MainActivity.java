@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -12,7 +14,12 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.concurrent.ExecutionException;
 
 import fikt.pmp.weatherreminder.ConsumingAPIs.CurrentWeather;
@@ -37,9 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int NUM_LIST_ITEMS = 9;
     ForecastAdapter mForecastAdapter;
     RecyclerView mWeatherList;
-    RecyclerView mFourDaysWeatherList;
 
-    FourDaysWeatherAdapter mFourDaysWeatherAdapter;
+    private TextView mSecondDayDate;
+    private TextView mThirdDayDate;
+    private TextView mFourthDayDate;
 
 
     @Override
@@ -55,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         temperature = findViewById(R.id.temperature);
         celsiusOrFahrenheitIV = findViewById(R.id.celsiusOrFahrenheit);
         firstDateTV = findViewById(R.id.firstDate);
+        mSecondDayDate = findViewById(R.id.secondDayDate);
+        mThirdDayDate = findViewById(R.id.thirdDayDate);
+        mFourthDayDate = findViewById(R.id.fourthDayDate);
 
         try {
             openWeatherMapFiveDays = new FiveDayThreeHour().execute().get();
@@ -71,18 +82,26 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mWeatherList.setLayoutManager(layoutManager);
         mWeatherList.setHasFixedSize(true);
-        mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays);
+
+        /*WeatherDataSort weatherDataSort = new WeatherDataSort(openWeatherMapFiveDays.getList());
+        weatherDataSort.findAllDates();
+        OpenWeatherMapFiveDays my5days = new OpenWeatherMapFiveDays();
+        my5days.setCity(openWeatherMapFiveDays.getCity());
+        my5days.setCnt(openWeatherMapFiveDays.getCnt());
+        my5days.setCod(openWeatherMapFiveDays.getCod());
+        my5days.setMessage(openWeatherMapFiveDays.getMessage());
+        my5days.setList(weatherDataSort.getDayData(1));*/
+       // mForecastAdapter = new ForecastAdapter(my5days.getList().size(), my5days);
+mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays);
+
         mWeatherList.setAdapter(mForecastAdapter);
 
-        mFourDaysWeatherList = findViewById(R.id.recycler2);
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
-        mFourDaysWeatherList.setLayoutManager(layoutManager2);
-        mFourDaysWeatherList.setHasFixedSize(true);
-        mFourDaysWeatherAdapter = new FourDaysWeatherAdapter(4, openWeatherMapFiveDays);
-        mFourDaysWeatherList.setAdapter(mFourDaysWeatherAdapter);
+
+
+
     }
 
-    void setWeatherData(){
+    void setWeatherData() {
         cityName.setText(openWeatherMapFiveDays.getCity().getName());
         country.setText(", " + openWeatherMapFiveDays.getCity().getCountry());
 
@@ -94,10 +113,32 @@ public class MainActivity extends AppCompatActivity {
         float tempInKelvin = openWeatherMapCurrent.getMain().getTemp();
         calculateTemperature(tempInKelvin, true);
 
-        String dateTimeString = openWeatherMapFiveDays.getList().get(0).getDt_txt();
-        DateTime dateTime = DateTime.parse(dateTimeString, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
-        firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
-        //firstTimeTv.setText(LocalDate.now());
+        WeatherDataSort weatherDataSort = new WeatherDataSort(openWeatherMapFiveDays.getList());
+        weatherDataSort.findAllDates();
+
+
+//        DateTime dateTime = DateTime.parse(openWeatherMapFiveDays.getList().get(0).getDt_txt(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+//        firstDateTV.setText(dateTime.toString(DateTimeFormat.mediumDate()));
+        firstDateTV.setText(weatherDataSort.getDateTimes().get(0).toString(DateTimeFormat.mediumDate()));
+
+
+
+//        DateTime secondDayDate = new DateTime().plusDays(1);
+//        mSecondDayDate.setText(secondDayDate.toString(DateTimeFormat.mediumDate()));
+        TemperatureWorker dayTwo = new TemperatureWorker(true);
+        dayTwo.findDayMinMax(weatherDataSort.getDayData(2));
+        mSecondDayDate.setText(weatherDataSort.getDateTimes().get(1).toString(DateTimeFormat.mediumDate())
+                + "\t\t" + dayTwo.getmDayMaxTemp()  +"° / " + dayTwo.getmDayMinTemp() + "°");
+
+        TemperatureWorker dayThree = new TemperatureWorker(true);
+        dayThree.findDayMinMax(weatherDataSort.getDayData(3));
+        mThirdDayDate.setText(weatherDataSort.getDateTimes().get(2).toString(DateTimeFormat.mediumDate())
+                + "\t\t" + dayThree.getmDayMaxTemp()  +"° / " + dayThree.getmDayMinTemp() + "°");
+
+        TemperatureWorker dayFour = new TemperatureWorker(true);
+        dayFour.findDayMinMax(weatherDataSort.getDayData(4));
+        mFourthDayDate.setText(weatherDataSort.getDateTimes().get(3).toString(DateTimeFormat.mediumDate())
+                + "\t\t" + dayFour.getmDayMaxTemp()  +"° / " + dayFour.getmDayMinTemp() + "°");
 
         String stringBuilder = "";
         for (int i = 0; i < openWeatherMapFiveDays.getCnt(); i++) {
@@ -110,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-     void getMainWeatherIcon(String iconCode) {
+    void getMainWeatherIcon(String iconCode) {
         switch (iconCode) {
             case "01d":
                 weatherIconIV.setImageResource(R.drawable.clearskyd);
