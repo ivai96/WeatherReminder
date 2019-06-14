@@ -1,6 +1,8 @@
 package fikt.pmp.weatherreminder.DataModel;
 
-public class City {
+import java.io.Serializable;
+
+public class City implements Serializable {
     private int id;
     private String name;
     Coord coord;

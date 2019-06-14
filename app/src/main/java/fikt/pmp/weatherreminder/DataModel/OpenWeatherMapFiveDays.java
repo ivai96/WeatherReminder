@@ -1,8 +1,9 @@
 package fikt.pmp.weatherreminder.DataModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OpenWeatherMapFiveDays
+public class OpenWeatherMapFiveDays implements Serializable
 {
     private int cod;
     private float message;

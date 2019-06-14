@@ -1,6 +1,8 @@
 package fikt.pmp.weatherreminder.DataModel;
 
-public class Main {
+import java.io.Serializable;
+
+public class Main implements Serializable {
     private float temp;
     private float temp_min;
     private float temp_max;

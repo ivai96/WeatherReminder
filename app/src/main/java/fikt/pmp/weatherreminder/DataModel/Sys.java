@@ -1,6 +1,8 @@
 package fikt.pmp.weatherreminder.DataModel;
 
-public class Sys {
+import java.io.Serializable;
+
+public class Sys implements Serializable {
     private String pod;
 
     public String getPod() {

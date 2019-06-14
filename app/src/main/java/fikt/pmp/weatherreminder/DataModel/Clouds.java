@@ -1,6 +1,8 @@
 package fikt.pmp.weatherreminder.DataModel;
 
-public class Clouds {
+import java.io.Serializable;
+
+public class Clouds implements Serializable {
     private float all;
 
     public float getAll() {

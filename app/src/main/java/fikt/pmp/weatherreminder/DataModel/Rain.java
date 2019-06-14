@@ -2,7 +2,9 @@ package fikt.pmp.weatherreminder.DataModel;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Rain {
+import java.io.Serializable;
+
+public class Rain implements Serializable {
     @SerializedName("3h")
     private float volume;
 

@@ -19,17 +19,19 @@ import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapFiveDays;
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
     private int mNumberItems;
     private OpenWeatherMapFiveDays mOpenWeatherMapFiveDays;
+    private int mLayoutID;
 
-    public ForecastAdapter(int numberOfItems, OpenWeatherMapFiveDays openWeatherMapFiveDays) {
+    public ForecastAdapter(int numberOfItems, OpenWeatherMapFiveDays openWeatherMapFiveDays, int layoutID) {
         mNumberItems = numberOfItems;
         mOpenWeatherMapFiveDays = openWeatherMapFiveDays;
+        mLayoutID = layoutID;
 
     }
 
     @Override
     public ForecastViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.forecast_list_item;
+        int layoutIdForListItem = mLayoutID;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 

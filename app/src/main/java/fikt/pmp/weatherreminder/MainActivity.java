@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         my5days.setMessage(openWeatherMapFiveDays.getMessage());
         my5days.setList(weatherDataSort.getDayData(1));*/
        // mForecastAdapter = new ForecastAdapter(my5days.getList().size(), my5days);
-mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays);
+mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R.layout.forecast_list_item);
 
         mWeatherList.setAdapter(mForecastAdapter);
 
@@ -137,6 +137,7 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays);
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SecondDayActivity.class);
+                intent.putExtra("fiveDays", openWeatherMapFiveDays);
                 startActivity(intent);
             }
         });

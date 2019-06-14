@@ -1,8 +1,9 @@
 package fikt.pmp.weatherreminder.DataModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OpenWeatherMapCurrent {
+public class OpenWeatherMapCurrent implements Serializable {
 
     private Coord coord;
     private ArrayList<Weather> weather;

@@ -1,10 +1,11 @@
 package fikt.pmp.weatherreminder.DataModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class List {
+public class List implements Serializable {
     private long dt;
     private Main main;
     private ArrayList<Weather> weather;
