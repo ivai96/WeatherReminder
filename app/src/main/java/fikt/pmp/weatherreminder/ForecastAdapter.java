@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -70,7 +68,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
         void bind(int listIndex) {
 
-            String stringBuilder = "";
             List item = mOpenWeatherMapFiveDays.getList().get(listIndex);
 
             String dateTimeString = item.getDt_txt();
@@ -130,12 +127,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             float tempInKelvin = item.getMain().getTemp();
             listItemTempView.setText(Integer.toString(Math.round(tempInKelvin - 273.15f)) + "°C");
 
-            stringBuilder += "Time: " +
-                    item.getDt_txt() +
-                    "\n" +
-                    "Temperature: " +
-                    item.getMain().getTemp();
-            //listItemNumberView.setText(stringBuilder);
         }
     }
 }
