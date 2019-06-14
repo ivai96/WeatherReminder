@@ -13,14 +13,12 @@ public class SecondDayActivity extends AppCompatActivity {
 
     RecyclerView mWeatherList;
     ForecastAdapter mForecastAdapter;
-    LinearLayout mforecastAdapterLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second_day);
 
-        mforecastAdapterLL = findViewById(R.id.forecastAdapterLL);
 
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity.hasExtra("fiveDays")) {

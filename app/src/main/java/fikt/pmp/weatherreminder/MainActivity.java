@@ -151,6 +151,7 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ThirdDayActivity.class);
+                intent.putExtra("fiveDays", openWeatherMapFiveDays);
                 startActivity(intent);
             }
         });
@@ -164,6 +165,7 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, FourthDay.class);
+                intent.putExtra("fiveDays", openWeatherMapFiveDays);
                 startActivity(intent);
             }
         });
