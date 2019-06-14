@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,10 +49,13 @@ public class MainActivity extends AppCompatActivity {
     ForecastAdapter mForecastAdapter;
     RecyclerView mWeatherList;
 
+    private LinearLayout mSecondDayWeather;
     private TextView mSecondDayDate;
     private TextView mSecondDayTemp;
+    private LinearLayout mThirdDayWether;
     private TextView mThirdDayDate;
     private TextView mThirdDayTemp;
+    private LinearLayout mFourthDayWeather;
     private TextView mFourthDayDate;
     private TextView mFourthDayTemp;
 
@@ -69,10 +73,13 @@ public class MainActivity extends AppCompatActivity {
         temperature = findViewById(R.id.temperature);
         celsiusOrFahrenheitIV = findViewById(R.id.celsiusOrFahrenheit);
         firstDateTV = findViewById(R.id.firstDate);
+        mSecondDayWeather = findViewById(R.id.secondDayWeather);
         mSecondDayDate = findViewById(R.id.secondDayDate);
         mSecondDayTemp = findViewById(R.id.secondDayTemp);
+        mThirdDayWether = findViewById(R.id.thirdDayWeather);
         mThirdDayDate = findViewById(R.id.thirdDayDate);
         mThirdDayTemp = findViewById(R.id.thirdDayTemp);
+        mFourthDayWeather = findViewById(R.id.fourthDayWeather);
         mFourthDayDate = findViewById(R.id.fourthDayDate);
         mFourthDayTemp = findViewById(R.id.fourthDayTemp);
 
@@ -139,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         mSecondDayDate.setText(s.format(weatherDataSort.getDates().get(1)));
         mSecondDayTemp.setText(dayTwo.getmDayMaxTemp() + "° / " + dayTwo.getmDayMinTemp() + "°");
 
-        mSecondDayDate.setOnClickListener(new View.OnClickListener() {
+        mSecondDayWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SecondDayActivity.class);
@@ -153,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         mThirdDayDate.setText(s.format(weatherDataSort.getDates().get(2)));
         mThirdDayTemp.setText(dayThree.getmDayMaxTemp() + "° / " + dayThree.getmDayMinTemp() + "°");
 
-        mThirdDayDate.setOnClickListener(new View.OnClickListener() {
+        mThirdDayWether.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ThirdDayActivity.class);
@@ -167,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         mFourthDayDate.setText(s.format(weatherDataSort.getDates().get(3)));
         mFourthDayTemp.setText(dayFour.getmDayMaxTemp() + "° / " + dayFour.getmDayMinTemp() + "°");
 
-        mFourthDayDate.setOnClickListener(new View.OnClickListener() {
+        mFourthDayWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, FourthDay.class);
