@@ -49,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mWeatherList;
 
     private TextView mSecondDayDate;
+    private TextView mSecondDayTemp;
     private TextView mThirdDayDate;
+    private TextView mThirdDayTemp;
     private TextView mFourthDayDate;
+    private TextView mFourthDayTemp;
 
 
     @Override
@@ -67,8 +70,11 @@ public class MainActivity extends AppCompatActivity {
         celsiusOrFahrenheitIV = findViewById(R.id.celsiusOrFahrenheit);
         firstDateTV = findViewById(R.id.firstDate);
         mSecondDayDate = findViewById(R.id.secondDayDate);
+        mSecondDayTemp = findViewById(R.id.secondDayTemp);
         mThirdDayDate = findViewById(R.id.thirdDayDate);
+        mThirdDayTemp = findViewById(R.id.thirdDayTemp);
         mFourthDayDate = findViewById(R.id.fourthDayDate);
+        mFourthDayTemp = findViewById(R.id.fourthDayTemp);
 
         try {
             openWeatherMapFiveDays = new FiveDayThreeHour().execute().get();
@@ -130,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
 
         SimpleDateFormat s = new SimpleDateFormat("EEE, d MMM");
 
-        mSecondDayDate.setText(s.format(weatherDataSort.getDates().get(1))
-                + "     " + dayTwo.getmDayMaxTemp() + "° / " + dayTwo.getmDayMinTemp() + "°");
+        mSecondDayDate.setText(s.format(weatherDataSort.getDates().get(1)));
+        mSecondDayTemp.setText(dayTwo.getmDayMaxTemp() + "° / " + dayTwo.getmDayMinTemp() + "°");
 
         mSecondDayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
         TemperatureWorker dayThree = new TemperatureWorker(true);
         dayThree.findDayMinMax(weatherDataSort.getDayData(3));
-        mThirdDayDate.setText(s.format(weatherDataSort.getDates().get(2))
-                + "     " + dayThree.getmDayMaxTemp() + "° / " + dayThree.getmDayMinTemp() + "°");
+        mThirdDayDate.setText(s.format(weatherDataSort.getDates().get(2)));
+        mThirdDayTemp.setText(dayThree.getmDayMaxTemp() + "° / " + dayThree.getmDayMinTemp() + "°");
 
         mThirdDayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
         TemperatureWorker dayFour = new TemperatureWorker(true);
         dayFour.findDayMinMax(weatherDataSort.getDayData(4));
-        mFourthDayDate.setText(s.format(weatherDataSort.getDates().get(3))
-                + "     " + dayFour.getmDayMaxTemp() + "° / " + dayFour.getmDayMinTemp() + "°");
+        mFourthDayDate.setText(s.format(weatherDataSort.getDates().get(3)));
+        mFourthDayTemp.setText(dayFour.getmDayMaxTemp() + "° / " + dayFour.getmDayMinTemp() + "°");
 
         mFourthDayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void calculateTemperature(float tempInKelvin, boolean convertToCelsius) {
-        if (convertToCelsius ) {
+        if (convertToCelsius) {
             temperature.setText(Integer.toString(Math.round(tempInKelvin - 273.15f)));
             celsiusOrFahrenheitIV.setImageResource(R.drawable.celsius);
         } else {

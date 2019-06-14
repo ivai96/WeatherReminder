@@ -109,14 +109,24 @@
         android:id="@+id/secondDayWeather"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:orientation="horizontal"
-        android:layout_margin="12dp">
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/secondDayDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/secondDayTemp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_gravity="end"/>
 
 
     </LinearLayout>
@@ -124,25 +134,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp">
+        android:layout_margin="12dp"
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/thirdDayDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/thirdDayTemp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp">
+        android:layout_margin="12dp"
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/fourthDayDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/fourthDayTemp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
     </LinearLayout>
 
 
