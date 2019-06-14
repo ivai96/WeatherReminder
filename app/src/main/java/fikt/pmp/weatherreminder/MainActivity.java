@@ -94,12 +94,10 @@ public class MainActivity extends AppCompatActivity {
         my5days.setCod(openWeatherMapFiveDays.getCod());
         my5days.setMessage(openWeatherMapFiveDays.getMessage());
         my5days.setList(weatherDataSort.getDayData(1));*/
-       // mForecastAdapter = new ForecastAdapter(my5days.getList().size(), my5days);
-mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R.layout.forecast_list_item);
+        // mForecastAdapter = new ForecastAdapter(my5days.getList().size(), my5days);
+        mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R.layout.forecast_list_item);
 
         mWeatherList.setAdapter(mForecastAdapter);
-
-
 
 
     }
@@ -125,13 +123,15 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R
         firstDateTV.setText(weatherDataSort.getDateTimes().get(0).toString(DateTimeFormat.mediumDate()));
 
 
-
 //        DateTime secondDayDate = new DateTime().plusDays(1);
 //        mSecondDayDate.setText(secondDayDate.toString(DateTimeFormat.mediumDate()));
         TemperatureWorker dayTwo = new TemperatureWorker(true);
         dayTwo.findDayMinMax(weatherDataSort.getDayData(2));
-        mSecondDayDate.setText(weatherDataSort.getDates().get(1).toString()
-                + "     " + dayTwo.getmDayMaxTemp()  +"° / " + dayTwo.getmDayMinTemp() + "°");
+
+        SimpleDateFormat s = new SimpleDateFormat("EEE, d MMM");
+
+        mSecondDayDate.setText(s.format(weatherDataSort.getDates().get(1))
+                + "     " + dayTwo.getmDayMaxTemp() + "° / " + dayTwo.getmDayMinTemp() + "°");
 
         mSecondDayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +144,8 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R
 
         TemperatureWorker dayThree = new TemperatureWorker(true);
         dayThree.findDayMinMax(weatherDataSort.getDayData(3));
-        mThirdDayDate.setText(weatherDataSort.getDateTimes().get(2).toString(DateTimeFormat.mediumDate())
-                + "     " + dayThree.getmDayMaxTemp()  +"° / " + dayThree.getmDayMinTemp() + "°");
+        mThirdDayDate.setText(s.format(weatherDataSort.getDates().get(2))
+                + "     " + dayThree.getmDayMaxTemp() + "° / " + dayThree.getmDayMinTemp() + "°");
 
         mThirdDayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,8 +158,8 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R
 
         TemperatureWorker dayFour = new TemperatureWorker(true);
         dayFour.findDayMinMax(weatherDataSort.getDayData(4));
-        mFourthDayDate.setText(weatherDataSort.getDateTimes().get(3).toString(DateTimeFormat.mediumDate())
-                + "     " + dayFour.getmDayMaxTemp()  +"° / " + dayFour.getmDayMinTemp() + "°");
+        mFourthDayDate.setText(s.format(weatherDataSort.getDates().get(3))
+                + "     " + dayFour.getmDayMaxTemp() + "° / " + dayFour.getmDayMinTemp() + "°");
 
         mFourthDayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +223,7 @@ mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R
     }
 
     void calculateTemperature(float tempInKelvin, boolean convertToCelsius) {
-        if (convertToCelsius == true) {
+        if (convertToCelsius ) {
             temperature.setText(Integer.toString(Math.round(tempInKelvin - 273.15f)));
             celsiusOrFahrenheitIV.setImageResource(R.drawable.celsius);
         } else {
