@@ -11,9 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FourthDay" android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".ThirdDayActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".SecondDayActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".LoginActivity2"></activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".FourthDay"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ThirdDayActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SecondDayActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
