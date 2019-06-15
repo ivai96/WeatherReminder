@@ -1,7 +1,6 @@
 package fikt.pmp.weatherreminder;
 
 import android.content.Intent;
-import android.icu.text.DateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,35 +8,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Formatter;
 import java.util.concurrent.ExecutionException;
 
 import fikt.pmp.weatherreminder.ConsumingAPIs.CurrentWeather;
 import fikt.pmp.weatherreminder.ConsumingAPIs.FiveDayThreeHour;
-import fikt.pmp.weatherreminder.DataModel.List;
 import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapCurrent;
 import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapFiveDays;
-import fikt.pmp.weatherreminder.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView weatherData;
     private TextView cityName;
     private TextView country;
     private ImageView weatherIconIV;
@@ -102,20 +89,10 @@ public class MainActivity extends AppCompatActivity {
         mWeatherList.setLayoutManager(layoutManager);
         mWeatherList.setHasFixedSize(true);
 
-        /*WeatherDataSort weatherDataSort = new WeatherDataSort(openWeatherMapFiveDays.getList());
-        weatherDataSort.findAllDates();
-        OpenWeatherMapFiveDays my5days = new OpenWeatherMapFiveDays();
-        my5days.setCity(openWeatherMapFiveDays.getCity());
-        my5days.setCnt(openWeatherMapFiveDays.getCnt());
-        my5days.setCod(openWeatherMapFiveDays.getCod());
-        my5days.setMessage(openWeatherMapFiveDays.getMessage());
-        my5days.setList(weatherDataSort.getDayData(1));*/
-        // mForecastAdapter = new ForecastAdapter(my5days.getList().size(), my5days);
+
         mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R.layout.forecast_list_item);
 
         mWeatherList.setAdapter(mForecastAdapter);
-
-
     }
 
     void setWeatherData() {
