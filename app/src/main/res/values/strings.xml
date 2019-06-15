@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">WeatherReminder</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_useralert">User alert</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
