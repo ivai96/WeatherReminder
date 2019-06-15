@@ -12,10 +12,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.format.DateTimeFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 import fikt.pmp.weatherreminder.ConsumingAPIs.CurrentWeather;
@@ -49,12 +55,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView mFourthDayDate;
     private TextView mFourthDayTemp;
 
+    private static final int RC_SIGN_IN = 9876;
+    private FirebaseAuth mAuth;
+    private boolean mSignedIn;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         JodaTimeAndroid.init(this);
+
+        mAuth = FirebaseAuth.getInstance();
 
         cityName = findViewById(R.id.cityName);
         country = findViewById(R.id.countryName);
@@ -93,6 +106,20 @@ public class MainActivity extends AppCompatActivity {
         mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R.layout.forecast_list_item);
 
         mWeatherList.setAdapter(mForecastAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showHideLogginBtns(mAuth.getCurrentUser());
+    }
+    private void showHideLogginBtns(FirebaseUser user) {
+        if (user != null) {
+            // Signed in
+            mSignedIn = true;
+        } else {
+            mSignedIn = false;
+        }
     }
 
     void setWeatherData() {
@@ -228,17 +255,71 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        menu.findItem(R.id.signIn).setVisible(!mSignedIn);
+        menu.findItem(R.id.signOut).setVisible(mSignedIn);
+        menu.findItem(R.id.userAlert).setVisible(mSignedIn);
         return  true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int menuItem = item.getItemId();
-        if(menuItem == R.id.signIn){
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+        int itemId = item.getItemId();
+        switch (itemId){
+            case R.id.signIn:
+                startSignIn();
+                break;
+            case R.id.signOut:
+                AuthUI.getInstance().signOut(this);
+                mSignedIn=false;
+                invalidateOptionsMenu();
+                break;
+            case R.id.userAlert:
+                //open new activity to set alerts
+                break;
         }
+//        if(menuItem == R.id.signIn){
+////            Intent intent = new Intent(MainActivity.this, UserAlertActivity.class);
+////            startActivity(intent);
+//            startSignIn();
+//        }
+//        if(menuItem == R.id.signOut) {
+//            AuthUI.getInstance().signOut(this);
+//            mSignedIn=false;
+//            invalidateOptionsMenu();
+//        }
+//        if(menuItem == R.id.userAlert) {
+//
+//        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                mSignedIn = true;
+            } else {
+                mSignedIn = false;
+            }
+            invalidateOptionsMenu();
+        }
+    }
+
+    private void startSignIn() {
+        // Build FirebaseUI sign in intent. For documentation on this operation and all
+        // possible customization see: https://github.com/firebase/firebaseui-android
+        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                .setAvailableProviders(Arrays.asList(
+                        new AuthUI.IdpConfig.EmailBuilder().build(),
+                        new AuthUI.IdpConfig.GoogleBuilder().build()))
+                .setLogo(R.mipmap.ic_launcher)
+                .build();
+
+        startActivityForResult(intent, RC_SIGN_IN);
     }
 }
