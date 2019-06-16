@@ -54,7 +54,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/raind"></ImageView>
+                    android:src="@drawable/rain"></ImageView>
 
                 <CheckBox
                     android:id="@+id/checkbox_rain"
