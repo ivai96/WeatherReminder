@@ -13,4 +13,5 @@
     <string name="snow">Snow</string>
     <string name="thunderstorm">Thunder</string>
     <string name="mist">Mist</string>
+    <string name="saveBtn">Save changes</string>
 </resources>
