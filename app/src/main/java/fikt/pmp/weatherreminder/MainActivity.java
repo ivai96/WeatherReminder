@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.format.DateTimeFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9876;
     private FirebaseAuth mAuth;
     private boolean mSignedIn;
-
 
 
     @Override
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         showHideLogginBtns(mAuth.getCurrentUser());
     }
+
     private void showHideLogginBtns(FirebaseUser user) {
         if (user != null) {
             // Signed in
@@ -259,23 +260,24 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.signIn).setVisible(!mSignedIn);
         menu.findItem(R.id.signOut).setVisible(mSignedIn);
         menu.findItem(R.id.userAlert).setVisible(mSignedIn);
-        return  true;
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        switch (itemId){
+        switch (itemId) {
             case R.id.signIn:
                 startSignIn();
                 break;
             case R.id.signOut:
                 AuthUI.getInstance().signOut(this);
-                mSignedIn=false;
+                mSignedIn = false;
                 invalidateOptionsMenu();
                 break;
             case R.id.userAlert:
-                //open new activity to set alerts
+                Intent intent = new Intent(MainActivity.this, UserAlertActivity.class);
+                startActivity(intent);
                 break;
         }
 //        if(menuItem == R.id.signIn){
