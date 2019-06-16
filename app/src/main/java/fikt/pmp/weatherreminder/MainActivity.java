@@ -15,20 +15,24 @@ import android.widget.TextView;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.format.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 import fikt.pmp.weatherreminder.ConsumingAPIs.CurrentWeather;
 import fikt.pmp.weatherreminder.ConsumingAPIs.FiveDayThreeHour;
+import fikt.pmp.weatherreminder.DataModel.List;
 import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapCurrent;
 import fikt.pmp.weatherreminder.DataModel.OpenWeatherMapFiveDays;
+import fikt.pmp.weatherreminder.DataModel.WeatherTodayFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9876;
     private FirebaseAuth mAuth;
     private boolean mSignedIn;
+
+    private FirebaseFirestore mDb;
 
 
     @Override
@@ -106,12 +112,47 @@ public class MainActivity extends AppCompatActivity {
         mForecastAdapter = new ForecastAdapter(NUM_LIST_ITEMS, openWeatherMapFiveDays, R.layout.forecast_list_item);
 
         mWeatherList.setAdapter(mForecastAdapter);
+
+
+        mDb = FirebaseFirestore.getInstance();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         showHideLogginBtns(mAuth.getCurrentUser());
+        WeatherDataSort weatherDataSort = new WeatherDataSort(openWeatherMapFiveDays.getList());
+        weatherDataSort.findAllDates();
+        mDb.collection("weather").document("today").set(weatherToSave(weatherDataSort.getDayData(1)));
+
+    }
+
+    public WeatherTodayFirestore weatherToSave(ArrayList<List> list) {
+        Boolean rain = false;
+        Boolean snow = false;
+        Boolean thunder = false;
+        Boolean mist = false;
+        for (List item : list) {
+            switch (item.getWeather().get(0).getDescription()) {
+                case "rain":
+                    rain = true;
+                    break;
+                case "shower rain":
+                    rain = true;
+                    break;
+                case "thunderstorm":
+                    thunder = true;
+                    break;
+                case "snow":
+                    snow = true;
+                    break;
+                case "mist":
+                    mist = true;
+                    break;
+            }
+        }
+        return new WeatherTodayFirestore(rain, snow, thunder, mist);
     }
 
     private void showHideLogginBtns(FirebaseUser user) {
