@@ -280,20 +280,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
         }
-//        if(menuItem == R.id.signIn){
-////            Intent intent = new Intent(MainActivity.this, UserAlertActivity.class);
-////            startActivity(intent);
-//            startSignIn();
-//        }
-//        if(menuItem == R.id.signOut) {
-//            AuthUI.getInstance().signOut(this);
-//            mSignedIn=false;
-//            invalidateOptionsMenu();
-//        }
-//        if(menuItem == R.id.userAlert) {
-//
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
