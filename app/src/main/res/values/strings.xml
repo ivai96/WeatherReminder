@@ -11,6 +11,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="rain">Rain</string>
     <string name="snow">Snow</string>
-    <string name="thunderstorm">Thunderstorm</string>
+    <string name="thunderstorm">Thunder</string>
     <string name="mist">Mist</string>
 </resources>

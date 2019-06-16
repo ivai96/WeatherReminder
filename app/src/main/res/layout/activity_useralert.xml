@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     android:orientation="vertical"
     android:padding="8dp"
     android:weightSum="6"
@@ -20,7 +21,9 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose weather condition for which you would want to be notified"
+            android:text="Choose weather condition for which you would want to be notified:"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:textSize="32dp"></TextView>
     </RelativeLayout>
 
@@ -86,9 +89,9 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:src="@drawable/thunderstormd"></ImageView>
+                    android:layout_weight="1"
+                    android:src="@drawable/storm"></ImageView>
 
                 <CheckBox
                     android:id="@+id/checkbox_thunder"
@@ -120,9 +123,9 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:src="@drawable/snowd"></ImageView>
+                    android:layout_weight="1"
+                    android:src="@drawable/snow"></ImageView>
 
                 <CheckBox
                     android:id="@+id/checkbox_snow"
@@ -154,8 +157,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:src="@drawable/mist"></ImageView>
 
                 <CheckBox
@@ -169,4 +172,5 @@
         </android.support.v7.widget.CardView>
 
     </GridLayout>
+
 </LinearLayout>

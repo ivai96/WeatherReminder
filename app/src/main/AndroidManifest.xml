@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UserAlertActivity"
-            android:label="@string/title_activity_useralert" />
+            android:label="@string/title_activity_useralert"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".FourthDay"
             android:parentActivityName=".MainActivity" />
